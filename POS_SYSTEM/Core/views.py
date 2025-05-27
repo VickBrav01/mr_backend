@@ -6,7 +6,9 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.permissions import IsAuthenticated
 from .models import BusinessDetails
+
 # Create your views here.
+
 
 class BusinessDetailsView(APIView):
     queryset = BusinessDetails.objects.all()
@@ -23,14 +25,17 @@ class BusinessDetailsView(APIView):
         except Exception as e:
             response = {
                 "error": str(e),
-                "message": "An error occurred while retrieving business details."
+                "message": "An error occurred while retrieving business details.",
             }
             return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    def put(self, request: Request, *args, **kwargs):
+
+    def post(self, request: Request, *args, **kwargs):
         data = self.request.data
         instance = get_object_or_404(self.queryset)
         try:
-            serializer = self.serializers_class(instance=instance, data=data, partial=True)
+            serializer = self.serializers_class(
+                instance=instance, data=data, partial=True
+            )
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -38,6 +43,6 @@ class BusinessDetailsView(APIView):
         except Exception as e:
             response = {
                 "error": str(e),
-                "message": "An error occurred while updating business details."
+                "message": "An error occurred while updating business details.",
             }
             return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
