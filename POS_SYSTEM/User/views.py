@@ -22,6 +22,7 @@ class UserRegistrationView(APIView):
                 response = {
                     "message": "User Created",
                     "data": serializer.data,
+                    
                 }
 
                 return Response(data=response, status=status.HTTP_201_CREATED)
@@ -36,3 +37,5 @@ class UserRegistrationView(APIView):
 
 class UserLoginView(TokenObtainPairView):
     pass
+
+
