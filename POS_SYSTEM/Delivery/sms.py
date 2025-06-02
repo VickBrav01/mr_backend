@@ -16,7 +16,7 @@ sms = africastalking.SMS
 # )
 def parcel_in_transit_message(phone_number, message):
     try:
-        response = sms.send(message, [phone_number])
+        response = sms.send(message, [phone_number])   
         print("SMS response:", response)
         return response
     except Exception as e:
