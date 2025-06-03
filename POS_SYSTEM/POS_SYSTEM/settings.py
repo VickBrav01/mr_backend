@@ -33,28 +33,34 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "Core",
     "Users",
     "Delivery",
-    
+    "corsheaders",
 ]
 
 
 # REST Framework settings
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
+    # "DEFAULT_PERMISSION_CLASSES": [
+    #     "rest_framework.permissions.IsAuthenticated",
+    # ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=90),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ROTATE_REFRESH_TOKENS": True,
+    "TOKEN_BLACKLIST_ENABLED": True,
 }
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -148,5 +154,8 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # Africa Talking settings
-AFRICASTALKING_USERNAME = config("AFRICASTALKING_USERNAME", default="sandbox")
+AFRICASTALKING_USERNAME = config("AFRICASTALKING_USERNAME")
 AFRICASTALKING_API_KEY = config("AFRICASTALKING_API_KEY")
+
+# Cors
+CORS_ALLOWED_ORIGINS = config("ALLOWED_CORS_ORIGINS").split(",")
