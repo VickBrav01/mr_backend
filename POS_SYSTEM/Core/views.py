@@ -25,9 +25,10 @@ class BusinessDetailsView(APIView):
     def post(self, request: Request, *args, **kwargs):
         instance = BusinessDetails.objects.first()
         if instance:
-            serializer = BusinessDetailsSerializer(instance, data=request.data)
+            data = self.request.data
+            serializer = BusinessDetailsSerializer(instance, data=data, partial=True)
         else:
-            serializer = BusinessDetailsSerializer(data=request.data)
+            serializer = BusinessDetailsSerializer(data=data)
 
         if serializer.is_valid():
             serializer.save()
