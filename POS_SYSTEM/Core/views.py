@@ -1,48 +1,37 @@
-from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from .serializers import BusinessDetailsSerializer
-from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .models import BusinessDetails
-
-# Create your views here.
+from .models import BusinessModel
+from .serializers import BusinessDetailsSerializer  # You should already have this
 
 
 class BusinessDetailsView(APIView):
-    queryset = BusinessDetails.objects.all()
-    serializers_class = BusinessDetailsSerializer
     permission_classes = [IsAuthenticated]
 
     def get(self, request: Request, *args, **kwargs):
-        business = get_object_or_404(self.queryset)
         try:
-            serializer = self.serializers_class(instance=business)
-            if serializer.is_valid():
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            raise ValueError("Invalid serializer data")
+            business = BusinessModel.objects.first()
+            if not business:
+                return Response({"detail": "No business found."}, status=204)
+
+            serializer = BusinessDetailsSerializer(business)
+            return Response(serializer.data, status=200)
+
         except Exception as e:
-            response = {
-                "error": str(e),
-                "message": "An error occurred while retrieving business details.",
-            }
-            return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": str(e)}, status=500)
 
     def post(self, request: Request, *args, **kwargs):
-        data = self.request.data
-        instance = get_object_or_404(self.queryset)
-        try:
-            serializer = self.serializers_class(
-                instance=instance, data=data, partial=True
-            )
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            raise ValueError("Invalid serializer data")
-        except Exception as e:
-            response = {
-                "error": str(e),
-                "message": "An error occurred while updating business details.",
-            }
-            return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        instance = BusinessModel.objects.first()
+        if instance:
+            data = self.request.data
+            serializer = BusinessDetailsSerializer(instance, data=data, partial=True)
+        else:
+            serializer = BusinessDetailsSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
+
+        return Response(serializer.errors, status=400)
