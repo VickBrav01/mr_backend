@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 
-class BusinessDetails(models.Model):
+class BusinessModel(models.Model):
     name = models.CharField(max_length=255, unique=True, blank=True, null=True)
     pin = models.CharField(max_length=10, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
