@@ -11,13 +11,13 @@ from django.shortcuts import get_object_or_404
 
 class ListAllDeliveries(ListAPIView):
     permission_class = [IsAuthenticated]
-    serializers_class = DeliverySerializer
+    serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
 
 class UpdateDelivery(APIView):
     permission_class = [IsAuthenticated]
-    serializers_class = DeliverySerializer
+    serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
     def patch(self, request: Request, *args, **kwargs):
@@ -25,7 +25,7 @@ class UpdateDelivery(APIView):
         data = self.request.data
         try:
             instance = get_object_or_404(Delivery, pk=pk)
-            serializer = self.serializers_class(
+            serializer = self.serializer_class(
                 data=data, instance=instance, partial=True
             )
 
@@ -44,16 +44,31 @@ class UpdateDelivery(APIView):
             }
             return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def delete(self, request: Request, *args, **kwargs):
+        try:
+            pk = self.kwargs.get("pk")
+            delivery = get_object_or_404(Delivery, pk=pk)
+            if not delivery:
+                return Response(
+                    {"message": "Order not found"}, status=status.HTTP_400_BAD_REQUEST
+                )
+            delivery.destroy()
+            return Response(
+                {"message": "Deleted successful"}, status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CreateDelivery(APIView):
     permission_class = [IsAuthenticated]
-    serializers_class = DeliverySerializer
+    serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
     def post(self, request: Request, *args, **kwargs):
         try:
             data = self.request.data
-            serializer = self.serializers_class(data=data)
+            serializer = self.serializer_class(data=data)
             if serializer:
                 serializer.save
                 response = {"message": "Delivery Made", "data": serializer.data}
