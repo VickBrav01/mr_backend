@@ -8,31 +8,23 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
-
 class ListAllDeliveries(ListAPIView):
-    permission_class = [IsAuthenticated]
-    serializers_class = DeliverySerializer
+    permission_classes = [IsAuthenticated]
+    serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
+class CreateDelivery(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = DeliverySerializer
 
-class UpdateDelivery(APIView):
-    permission_class = [IsAuthenticated]
-    serializers_class = DeliverySerializer
-    queryset = Delivery.objects.all()
-
-    def patch(self, request: Request, *args, **kwargs):
-        pk = self.kwargs.get("pk")
-        data = self.request.data
+    def post(self, request: Request, *args, **kwargs):
         try:
-            instance = get_object_or_404(Delivery, pk=pk)
-            serializer = self.serializers_class(
-                data=data, instance=instance, partial=True
-            )
-
-            if serializer:
-                serializer.save
+            data = request.data
+            serializer = self.serializer_class(data=data)
+            if serializer.is_valid():
+                serializer.save()
                 response = {
-                    "message": "Updated Delivery Successful",
+                    "message": "Delivery Created",
                     "data": serializer.data,
                 }
                 return Response(data=response, status=status.HTTP_201_CREATED)
@@ -40,28 +32,40 @@ class UpdateDelivery(APIView):
         except Exception as e:
             response = {
                 "error": str(e),
-                "message": "An error occurred when updating the order",
+                "message": "An error occurred when creating the delivery",
             }
             return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class UpdateDelivery(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = DeliverySerializer
 
-class CreateDelivery(APIView):
-    permission_class = [IsAuthenticated]
-    serializers_class = DeliverySerializer
-    queryset = Delivery.objects.all()
-
-    def post(self, request: Request, *args, **kwargs):
+    def patch(self, request: Request, pk, *args, **kwargs):
         try:
-            data = self.request.data
-            serializer = self.serializers_class(data=data)
-            if serializer:
-                serializer.save
-                response = {"message": "Delivery Made", "data": serializer.data}
-                return Response(data=response, status=status.HTTP_201_CREATED)
+            instance = get_object_or_404(Delivery, id=pk)  # Use id since parcel_id is not the PK
+            serializer = self.serializer_class(instance=instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                response = {
+                    "message": "Updated Delivery Successful",
+                    "data": serializer.data,
+                }
+                return Response(data=response, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             response = {
                 "error": str(e),
-                "message": "An error occurred when creating the order",
+                "message": "An error occurred when updating the delivery",
             }
             return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class DeleteDelivery(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request: Request, pk):
+        try:
+            delivery = get_object_or_404(Delivery, id=pk)  # Use id since parcel_id is not the PK
+            delivery.delete()
+            return Response({"message": "Delivery deleted successfully"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e), "message": "An error occurred when deleting the delivery"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

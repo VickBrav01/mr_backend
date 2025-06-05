@@ -1,9 +1,7 @@
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -35,7 +33,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
-    "Core",
+    # "Core",
     "Users",
     "Delivery",
     "Customers",
@@ -51,7 +49,9 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -160,3 +160,25 @@ AFRICASTALKING_API_KEY = config("AFRICASTALKING_API_KEY")
 
 # Cors
 CORS_ALLOWED_ORIGINS = config("ALLOWED_CORS_ORIGINS").split(",")
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True

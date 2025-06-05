@@ -10,8 +10,7 @@ from django.contrib.auth.models import User
 from .serializer import UserSerializer
 
 
-# The `Register` class is an API view in Python that handles user registration by validating user
-# input, creating a new user, and generating access tokens.
+
 class Register(APIView):
     serializer_class = UserSerializer
 
@@ -35,7 +34,6 @@ class Register(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# The class `Login` is a subclass of `TokenObtainPairView` in Python.
 class Login(TokenObtainPairView):
     pass
 
@@ -56,3 +54,13 @@ class Logout(APIView):
             )
         except (TokenError, InvalidToken) as e:
             return Response({"detail": "Invalid token.", "error": str(e)}, status=400)
+class UserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+        })
