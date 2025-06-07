@@ -39,7 +39,20 @@ class Register(APIView):
 class Login(TokenObtainPairView):
     pass
 
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    def put(self, request):
+        serializer = UserSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            # Update the user instance
+            user = serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class Logout(APIView):
     permission_classes = [IsAuthenticated]
 

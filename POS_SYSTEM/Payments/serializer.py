@@ -8,7 +8,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         fields = [
             "parcel_id",
             "customer_name",
-            "status",
+            # "status",
             "delivery_cost",
             "delivered_at",
         ]

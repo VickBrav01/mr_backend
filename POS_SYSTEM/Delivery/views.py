@@ -8,34 +8,29 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
-
 class ListAllDeliveries(ListAPIView):
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Fixed syntax: use permission_classes
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
-
 class UpdateDelivery(APIView):
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Fixed syntax
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
     def patch(self, request: Request, *args, **kwargs):
         pk = self.kwargs.get("pk")
-        data = self.request.data
+        data = request.data
         try:
             instance = get_object_or_404(Delivery, pk=pk)
-            serializer = self.serializer_class(
-                data=data, instance=instance, partial=True
-            )
-
-            if serializer:
-                serializer.save
+            serializer = self.serializer_class(instance=instance, data=data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
                 response = {
                     "message": "Updated Delivery Successful",
                     "data": serializer.data,
                 }
-                return Response(data=response, status=status.HTTP_201_CREATED)
+                return Response(data=response, status=status.HTTP_200_OK)  # Use 200 for updates
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             response = {
@@ -52,25 +47,24 @@ class UpdateDelivery(APIView):
                 return Response(
                     {"message": "Order not found"}, status=status.HTTP_400_BAD_REQUEST
                 )
-            delivery.destroy()
+            delivery.delete()  # Use delete() instead of destroy()
             return Response(
                 {"message": "Deleted successful"}, status=status.HTTP_200_OK
             )
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class CreateDelivery(APIView):
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Fixed syntax
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
     def post(self, request: Request, *args, **kwargs):
         try:
-            data = self.request.data
+            data = request.data
             serializer = self.serializer_class(data=data)
-            if serializer:
-                serializer.save
+            if serializer.is_valid():
+                serializer.save()
                 response = {"message": "Delivery Made", "data": serializer.data}
                 return Response(data=response, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
