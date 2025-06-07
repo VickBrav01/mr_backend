@@ -15,19 +15,19 @@ from Notification.services import (
 
 
 class ListAllDeliveries(ListAPIView):
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Fixed syntax: use permission_classes
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
 
 class UpdateDelivery(APIView):
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Fixed syntax
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
     def patch(self, request: Request, *args, **kwargs):
         pk = self.kwargs.get("pk")
-        data = self.request.data
+        data = request.data
         try:
             instance = get_object_or_404(Delivery, pk=pk)
             # old_status = instance.delivery_status  # Track old status
@@ -78,13 +78,13 @@ class UpdateDelivery(APIView):
 
 
 class CreateDelivery(APIView):
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Fixed syntax
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
     def post(self, request: Request, *args, **kwargs):
         try:
-            data = self.request.data
+            data = request.data
             serializer = self.serializer_class(data=data)
             if serializer.is_valid():
                 serializer.save()

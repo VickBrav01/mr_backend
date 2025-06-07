@@ -16,6 +16,7 @@ class Delivery(models.Model):
     )
     customer_name = models.CharField(max_length=255)
     customer_phone = models.CharField(max_length=15)
+    delivery_cost=models.DecimalField(max_digits=10, decimal_places=2, default=0.00, blank=True, null=True)
     delivery_address = models.CharField(max_length=255)
     delivery_postal_code = models.CharField(null=True, max_length=20)
     delivery_city = models.CharField(max_length=100)
