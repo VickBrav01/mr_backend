@@ -30,22 +30,22 @@ class UpdateDelivery(APIView):
         data = self.request.data
         try:
             instance = get_object_or_404(Delivery, pk=pk)
-            old_status = instance.delivery_status  # Track old status
+            # old_status = instance.delivery_status  # Track old status
 
             serializer = self.serializer_class(
                 instance=instance, data=data, partial=True
             )
             if serializer.is_valid():
-                updated_instance = serializer.save()  # FIXED: actually save it
-                new_status = updated_instance.delivery_status
+                delivery = serializer.save()
+                new_status = delivery.delivery_status
 
                 # Send SMS based on new status
                 if new_status == "In Transit":
-                    in_transit_message(updated_instance)
+                    in_transit_message(delivery)
                 elif new_status == "delivered":
-                    delivered_message(updated_instance)
+                    delivered_message(delivery)
                 elif new_status == "cancelled":
-                    canceled_message(updated_instance)
+                    canceled_message(delivery)
 
                 response = {
                     "message": "Updated Delivery Successfully",

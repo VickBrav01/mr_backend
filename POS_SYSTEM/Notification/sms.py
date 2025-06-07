@@ -22,11 +22,3 @@ def delivery_message(message, phone_number):
     except Exception as e:
         print("Error sending SMS:", str(e))
         return None
-
-
-# def send_sms(phone_number, message):
-#     try:
-#         response = sms.send(message, [phone_number])
-#         return response
-#     except Exception as e:
-#         return {"error": str(e)}
