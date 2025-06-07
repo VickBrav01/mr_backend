@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "Delivery",
     "Customers",
     "Payments",
+    "Reports",
+    "Notification",
 ]
 
 

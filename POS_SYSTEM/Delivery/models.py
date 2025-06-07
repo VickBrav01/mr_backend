@@ -17,11 +17,12 @@ class Delivery(models.Model):
     customer_name = models.CharField(max_length=255)
     customer_phone = models.CharField(max_length=15)
     delivery_address = models.CharField(max_length=255)
-    delivery_postal_code = models.CharField(max_length=20)
+    delivery_postal_code = models.CharField(null=True, max_length=20)
     delivery_city = models.CharField(max_length=100)
     delivery_status = models.CharField(
         max_length=50, choices=STATUS_CHOICES, default="pending"
     )
+    delivery_cost = models.DecimalField(decimal_places=2, default=0, max_digits=6)
     created_at = models.DateTimeField(auto_now_add=True)
     delivered_at = models.DateTimeField(null=True, blank=True)
 
