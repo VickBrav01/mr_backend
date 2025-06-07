@@ -7,6 +7,11 @@ from rest_framework.request import Request
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+from Notification.services import (
+    in_transit_message,
+    delivered_message,
+    canceled_message,
+)
 
 
 class ListAllDeliveries(ListAPIView):
@@ -25,17 +30,28 @@ class UpdateDelivery(APIView):
         data = self.request.data
         try:
             instance = get_object_or_404(Delivery, pk=pk)
-            serializer = self.serializer_class(
-                data=data, instance=instance, partial=True
-            )
+            old_status = instance.delivery_status  # Track old status
 
-            if serializer:
-                serializer.save
+            serializer = self.serializer_class(
+                instance=instance, data=data, partial=True
+            )
+            if serializer.is_valid():
+                updated_instance = serializer.save()  # FIXED: actually save it
+                new_status = updated_instance.delivery_status
+
+                # Send SMS based on new status
+                if new_status == "In Transit":
+                    in_transit_message(updated_instance)
+                elif new_status == "delivered":
+                    delivered_message(updated_instance)
+                elif new_status == "cancelled":
+                    canceled_message(updated_instance)
+
                 response = {
-                    "message": "Updated Delivery Successful",
+                    "message": "Updated Delivery Successfully",
                     "data": serializer.data,
                 }
-                return Response(data=response, status=status.HTTP_201_CREATED)
+                return Response(data=response, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             response = {
@@ -52,7 +68,8 @@ class UpdateDelivery(APIView):
                 return Response(
                     {"message": "Order not found"}, status=status.HTTP_400_BAD_REQUEST
                 )
-            delivery.destroy()
+            canceled_message(delivery)
+            delivery.delete()
             return Response(
                 {"message": "Deleted successful"}, status=status.HTTP_200_OK
             )
@@ -69,9 +86,12 @@ class CreateDelivery(APIView):
         try:
             data = self.request.data
             serializer = self.serializer_class(data=data)
-            if serializer:
-                serializer.save
-                response = {"message": "Delivery Made", "data": serializer.data}
+            if serializer.is_valid():
+                serializer.save()
+                response = {
+                    "message": "Delivery Made",
+                    "data": serializer.data,
+                }
                 return Response(data=response, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
