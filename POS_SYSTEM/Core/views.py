@@ -4,7 +4,7 @@ from rest_framework.request import Request
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from .models import BusinessDetails
-from .serializers import BusinessDetailsSerializer 
+from .serializers import BusinessDetailsSerializer
 
 
 class BusinessDetailsView(APIView):

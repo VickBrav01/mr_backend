@@ -40,7 +40,7 @@ class UpdateDelivery(APIView):
                 new_status = delivery.delivery_status
 
                 # Send SMS based on new status
-                if new_status == "In Transit":
+                if new_status == "in_transit":
                     in_transit_message(delivery)
                 elif new_status == "delivered":
                     delivered_message(delivery)

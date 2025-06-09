@@ -3,7 +3,7 @@ from django.utils import timezone
 
 
 def in_transit_message(delivery):
-    delivery.delivery_status = "In Transit"
+    delivery.delivery_status = "in_transit"
     delivery.save()
 
     message = f"Hi {delivery.customer_name}, your delivery #{delivery.parcel_id} has been receieved and it is In Transit. We shall notify you when it has arrived at the given destination"
