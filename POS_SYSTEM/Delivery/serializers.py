@@ -22,3 +22,5 @@ class DeliverySerializer(serializers.ModelSerializer):
             "created_at",
             "delivered_at",
         ]
+
+    
