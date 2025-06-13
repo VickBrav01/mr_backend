@@ -6,6 +6,9 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import FilterClasses
 from django.shortcuts import get_object_or_404
 from Notification.services import (
     in_transit_message,
@@ -15,13 +18,22 @@ from Notification.services import (
 
 
 class ListAllDeliveries(ListAPIView):
-    permission_classes = [IsAuthenticated]  # Fixed syntax: use permission_classes
+    permission_classes = [IsAuthenticated]
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_class = FilterClasses
+    search_fields = ["customer_name", "email", "created_at"]
+    ordering_fields = ["created_at", "username"]
+    ordering = ["-created_at"]
 
 
 class UpdateDelivery(APIView):
-    permission_classes = [IsAuthenticated]  # Fixed syntax
+    permission_classes = [IsAuthenticated]
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
@@ -30,7 +42,6 @@ class UpdateDelivery(APIView):
         data = request.data
         try:
             instance = get_object_or_404(Delivery, pk=pk)
-            # old_status = instance.delivery_status  # Track old status
 
             serializer = self.serializer_class(
                 instance=instance, data=data, partial=True
@@ -78,7 +89,7 @@ class UpdateDelivery(APIView):
 
 
 class CreateDelivery(APIView):
-    permission_classes = [IsAuthenticated]  # Fixed syntax
+    permission_classes = [IsAuthenticated]
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
