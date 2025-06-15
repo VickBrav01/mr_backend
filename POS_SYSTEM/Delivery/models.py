@@ -2,6 +2,9 @@ from django.db import models
 from uuid import uuid4
 
 
+def generate_parcel_id():
+    return str(uuid4()).replace('-', '')[:6].upper()
+
 STATUS_CHOICES = [
     ("pending", "Pending"),
     ("in_transit", "In Transit"),
@@ -11,8 +14,11 @@ STATUS_CHOICES = [
 
 
 class Delivery(models.Model):
-    parcel_id = models.UUIDField(
-        default=uuid4, editable=False, unique=True, primary_key=False
+    parcel_id = models.CharField(
+        max_length=6,
+        default=generate_parcel_id,
+        unique=True,
+        editable=False
     )
     customer_name = models.CharField(max_length=255)
     customer_phone = models.CharField(max_length=15)
