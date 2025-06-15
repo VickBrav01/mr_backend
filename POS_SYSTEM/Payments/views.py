@@ -11,4 +11,4 @@ class PaymentsListView(ListAPIView):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["parcel_id", "customer_name"]
     ordering_fields = ["created_at", "customer_name"]
-    ordering = ["-created_at"]
+    ordering = ["-created_at"]  
