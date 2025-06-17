@@ -1,37 +1,79 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
 from .models import BusinessDetails
 from .serializers import BusinessDetailsSerializer
-
 
 class BusinessDetailsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request: Request, *args, **kwargs):
         try:
-            business = BusinessDetails.objects.first()
-            if not business:
-                return Response({"detail": "No business found."}, status=204)
-
-            serializer = BusinessDetailsSerializer(business)
-            return Response(serializer.data, status=200)
-
+            instance = BusinessDetails.objects.first()
+            if not instance:
+                return Response(
+                    {'message': 'No business details found', 'data': None},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = BusinessDetailsSerializer(instance)
+            response = {
+                'message': 'Retrieved Business Details Successfully',
+                'data': serializer.data,
+            }
+            return Response(data=response, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({"error": str(e)}, status=500)
+            response = {
+                'error': str(e),
+                'message': 'An error occurred when retrieving business details',
+            }
+            return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request: Request, *args, **kwargs):
-        instance = BusinessDetails.objects.first()
-        if instance:
-            data = self.request.data
-            serializer = BusinessDetailsSerializer(instance, data=data, partial=True)
-        else:
-            serializer = BusinessDetailsSerializer(data=data)
+        try:
+            if BusinessDetails.objects.exists():
+                return Response(
+                    {'error': 'Business details already exist'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            serializer = BusinessDetailsSerializer(data=request.data)
+            if serializer.is_valid():
+                instance = serializer.save()
+                response = {
+                    'message': 'Created Business Details Successfully',
+                    'data': BusinessDetailsSerializer(instance).data,
+                }
+                return Response(data=response, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            response = {
+                'error': str(e),
+                'message': 'An error occurred when creating business details',
+            }
+            return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def patch(self, request: Request, *args, **kwargs):
+        try:
+            instance = BusinessDetails.objects.first()
+            if not instance:
+                return Response(
+                    {'error': 'No business details found to update'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = BusinessDetailsSerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                instance = serializer.save()
+                response = {
+                    'message': 'Updated Business Details Successfully',
+                    'data': BusinessDetailsSerializer(instance).data,
+                }
+                return Response(data=response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            response = {
+                'error': str(e),
+                'message': 'An error occurred when updating business details',
+            }
+            return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

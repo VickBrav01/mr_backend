@@ -31,33 +31,52 @@ class ListAllDeliveries(ListAPIView):
     ordering_fields = ["created_at", "username"]
     ordering = ["-created_at"]
 
-
-class UpdateDelivery(APIView):
+class RetrieveUpdateDelivery(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = DeliverySerializer
     queryset = Delivery.objects.all()
 
+    def get(self, request: Request, *args, **kwargs):
+        """
+        Retrieves a single Delivery instance by its primary key.
+        """
+        try:
+            pk = self.kwargs.get("pk")
+            delivery = get_object_or_404(Delivery, pk=pk)
+            serializer = self.serializer_class(delivery)
+            response = {
+                "message": "Retrieved Delivery Successfully",
+                "data": serializer.data,
+            }
+            return Response(data=response, status=status.HTTP_200_OK)
+        except Exception as e:
+            response = {
+                "error": str(e),
+                "message": "An error occurred when retrieving the delivery",
+            }
+            return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     def patch(self, request: Request, *args, **kwargs):
+        """
+        Partially updates a Delivery instance.
+        Triggers status-specific messages if the delivery status changes.
+        """
         pk = self.kwargs.get("pk")
         data = request.data
         try:
             instance = get_object_or_404(Delivery, pk=pk)
-
             serializer = self.serializer_class(
                 instance=instance, data=data, partial=True
             )
             if serializer.is_valid():
                 delivery = serializer.save()
                 new_status = delivery.delivery_status
-
-                # Send SMS based on new status
                 if new_status == "in_transit":
                     in_transit_message(delivery)
                 elif new_status == "delivered":
                     delivered_message(delivery)
                 elif new_status == "cancelled":
                     canceled_message(delivery)
-
                 response = {
                     "message": "Updated Delivery Successfully",
                     "data": serializer.data,
@@ -72,17 +91,17 @@ class UpdateDelivery(APIView):
             return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request: Request, *args, **kwargs):
+        """
+        Deletes a Delivery instance.
+        Sends a cancellation message before deletion.
+        """
         try:
             pk = self.kwargs.get("pk")
             delivery = get_object_or_404(Delivery, pk=pk)
-            if not delivery:
-                return Response(
-                    {"message": "Order not found"}, status=status.HTTP_400_BAD_REQUEST
-                )
             canceled_message(delivery)
             delivery.delete()
             return Response(
-                {"message": "Deleted successful"}, status=status.HTTP_200_OK
+                {"message": "Deleted successfully"}, status=status.HTTP_200_OK
             )
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

@@ -4,10 +4,9 @@ from decouple import config
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
-
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 SECRET_KEY = config("SECRET_KEY")
 
@@ -15,8 +14,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
+cloudinary.config(
+    cloud_name=config('CLOUDINARY_CLOUD_NAME'),
+    api_key=config('CLOUDINARY_API_KEY'),
+    api_secret=config('CLOUDINARY_API_SECRET'),
+    secure=True
+)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -29,6 +32,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
+    'cloudinary',
+    'cloudinary_storage',
     "django_filters",
     "Core",
     "Users",
@@ -37,10 +42,9 @@ INSTALLED_APPS = [
     "Payments",
     "Reports",
     "Notification",
+    'search',
 ]
 
-
-# REST Framework settings
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -91,20 +95,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "POS_SYSTEM.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -121,10 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -133,31 +125,18 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
 STATIC_URL = "static/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# AUTH_USER_MODEL = "Users.User"
-
-# Cloudinary settings
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": config("CLOUDINARY_CLOUD_NAME"),
-    "API_KEY": config("CLOUDINARY_API_KEY"),
-    "API_SECRET": config("CLOUDINARY_API_SECRET"),
-}
+print("Cloudinary Config:", config('CLOUDINARY_CLOUD_NAME'), config('CLOUDINARY_API_KEY'), config('CLOUDINARY_API_SECRET'))
 
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
-# Africa Talking settings
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 AFRICASTALKING_USERNAME = config("AFRICASTALKING_USERNAME")
 AFRICASTALKING_API_KEY = config("AFRICASTALKING_API_KEY")
 
-# Cors
 CORS_ALLOWED_ORIGINS = config("ALLOWED_CORS_ORIGINS").split(",")
