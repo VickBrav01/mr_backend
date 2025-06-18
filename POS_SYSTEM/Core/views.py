@@ -3,7 +3,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
+from django.db.models import Count, Sum
+from Delivery.models import Delivery
+from .serializers import DashboardStatsSerializer
 from .models import BusinessDetails
 from .serializers import BusinessDetailsSerializer
 
@@ -77,3 +79,14 @@ class BusinessDetailsView(APIView):
                 'message': 'An error occurred when updating business details',
             }
             return Response(data=response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class DashboardStatsView(APIView):
+    def get(self, request):
+        stats = {
+            'total_deliveries': Delivery.objects.count(),
+            'total_customers': Delivery.objects.values('customer_name').distinct().count(),
+            'total_payments': Delivery.objects.aggregate(Sum('delivery_cost'))['delivery_cost__sum'] or 0.00,
+            'total_reports': Delivery.objects.count(),  # Using total deliveries as a proxy for reports
+        }
+        serializer = DashboardStatsSerializer(stats)
+        return Response(serializer.data, status=status.HTTP_200_OK)

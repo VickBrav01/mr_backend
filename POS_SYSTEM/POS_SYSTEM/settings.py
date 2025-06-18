@@ -2,9 +2,8 @@ from pathlib import Path
 from datetime import timedelta
 from decouple import config
 import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 import os
+import dj_database_url # Import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -54,7 +53,7 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
-    "DATETIME_FORMAT": "%d/%m/%y %H:%M",
+    # "DATETIME_FORMAT": "%d/%m/%y %H:%M", # This line was commented out in your original code
 }
 
 SIMPLE_JWT = {
@@ -68,6 +67,7 @@ SIMPLE_JWT = {
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -95,11 +95,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "POS_SYSTEM.wsgi.application"
 
+# Database
+# Use dj_database_url to parse the DATABASE_URL environment variable
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    'default': dj_database_url.parse(config("DATABASE_URL"), conn_max_age=600)
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -126,10 +125,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-print("Cloudinary Config:", config('CLOUDINARY_CLOUD_NAME'), config('CLOUDINARY_API_KEY'), config('CLOUDINARY_API_SECRET'))
 
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 

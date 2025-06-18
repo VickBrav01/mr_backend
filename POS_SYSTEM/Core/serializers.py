@@ -15,3 +15,11 @@ class BusinessDetailsSerializer(serializers.ModelSerializer):
         if instance.logo:
             data['logo'] = cloudinary.utils.cloudinary_url(instance.logo.public_id, secure=True)[0]
         return data
+    
+
+
+class DashboardStatsSerializer(serializers.Serializer):
+    total_deliveries = serializers.IntegerField()
+    total_customers = serializers.IntegerField()
+    total_payments = serializers.DecimalField(max_digits=10, decimal_places=2)
+    total_reports = serializers.IntegerField()
