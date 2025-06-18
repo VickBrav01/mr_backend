@@ -54,7 +54,7 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
-    "DATETIME_FORMAT": "%d/%m/%y %H:%M",
+    # "DATETIME_FORMAT": "%d/%m/%y %H:%M",
 }
 
 SIMPLE_JWT = {
