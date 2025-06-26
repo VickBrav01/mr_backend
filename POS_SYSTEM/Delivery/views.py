@@ -12,8 +12,8 @@ from .filters import FilterClasses
 from django.shortcuts import get_object_or_404
 from Notification.services import (
     in_transit_message,
-    delivered_message,
-    canceled_message,
+    # delivered_message,
+    # canceled_message,
 )
 
 
@@ -30,6 +30,7 @@ class ListAllDeliveries(ListAPIView):
     search_fields = ["customer_name", "email", "created_at"]
     ordering_fields = ["created_at", "username"]
     ordering = ["-created_at"]
+
 
 class RetrieveUpdateDelivery(APIView):
     permission_classes = [IsAuthenticated]
@@ -73,10 +74,10 @@ class RetrieveUpdateDelivery(APIView):
                 new_status = delivery.delivery_status
                 if new_status == "in_transit":
                     in_transit_message(delivery)
-                elif new_status == "delivered":
-                    delivered_message(delivery)
-                elif new_status == "cancelled":
-                    canceled_message(delivery)
+                # elif new_status == "delivered":
+                #     delivered_message(delivery)
+                # elif new_status == "cancelled":
+                #     canceled_message(delivery)
                 response = {
                     "message": "Updated Delivery Successfully",
                     "data": serializer.data,
@@ -98,7 +99,7 @@ class RetrieveUpdateDelivery(APIView):
         try:
             pk = self.kwargs.get("pk")
             delivery = get_object_or_404(Delivery, pk=pk)
-            canceled_message(delivery)
+            # canceled_message(delivery)
             delivery.delete()
             return Response(
                 {"message": "Deleted successfully"}, status=status.HTTP_200_OK
