@@ -1,0 +1,297 @@
+Watching for file changes with StatReloader
+C:\Users\Administrator\OneDrive\Documents\STUDIES\PERSONAL\WEB DEVELOPMENT\PROJECTS\mr_backend\POS_SYSTEM\POS_SYSTEM\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /api/delivery/
+C:\Users\Administrator\OneDrive\Documents\STUDIES\PERSONAL\WEB DEVELOPMENT\PROJECTS\mr_backend\POS_SYSTEM\Delivery\serializers.py changed, reloading.
+Watching for file changes with StatReloader
+Method Not Allowed: /api/delivery/17/pay/
+MpesaService initialized with: URL=https://sandbox.safaricom.co.ke, Shortcode=174379
+Generated password for timestamp 20250630142408 (encoded)
+Normalized phone number from '254717417314' to '254717417314'
+Requesting M-Pesa access token from: https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials
+Making request with headers: Authorization: Basic ********************************************************************************************************************************************************
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "GET /oauth/v1/generate?grant_type=client_credentials HTTP/1.1" 200 None
+Access token response - Status: 200, Response: {
+            "access_token": "4gRRo65L7gChHSeU8PGPFchZHDQG",
+            "expires_in": "3599"
+        }
+        
+M-Pesa access token obtained successfully
+Using access token: 4gRRo...ZHDQG
+Initiating STK Push to URL: https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
+STK Push payload: {
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUwNjMwMTQyNDA4",
+  "Timestamp": "20250630142408",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": "500",
+  "PartyA": "254717417314",
+  "PartyB": "174379",
+  "PhoneNumber": "254717417314",
+  "CallBackURL": "https://ebca-102-217-64-46.ngrok-free.app/api/payment/callback/",
+  "AccountReference": "DEL-A90073F6",
+  "TransactionDesc": "Payment for delivery A90073F6"
+}
+STK Push headers: {
+  "Authorization": "Bearer 4gRRo...ZHDQG",
+  "Content-Type": "application/json"
+}
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "POST /mpesa/stkpush/v1/processrequest HTTP/1.1" 200 None
+STK Push response - Status: 200, Response: {
+            "MerchantRequestID":"4366-4b9c-b7e7-e688c806cb1e21079",
+            "CheckoutRequestID":"ws_CO_30062025142418350717417314",
+            "ResponseCode": "0",
+            "ResponseDescription":"Success. Request accepted for processing",
+            "CustomerMessage":"Success. Request accepted for processing"
+        }
+        
+STK Push successful - CheckoutRequestID: ws_CO_30062025142418350717417314
+Invalid HTTP_HOST header: 'ebca-102-217-64-46.ngrok-free.app'. You may need to add 'ebca-102-217-64-46.ngrok-free.app' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\Administrator\OneDrive\Documents\STUDIES\PERSONAL\WEB DEVELOPMENT\PROJECTS\mr_backend\POS_SYSTEM\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\OneDrive\Documents\STUDIES\PERSONAL\WEB DEVELOPMENT\PROJECTS\mr_backend\POS_SYSTEM\env\Lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "C:\Users\Administrator\OneDrive\Documents\STUDIES\PERSONAL\WEB DEVELOPMENT\PROJECTS\mr_backend\POS_SYSTEM\env\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\Administrator\OneDrive\Documents\STUDIES\PERSONAL\WEB DEVELOPMENT\PROJECTS\mr_backend\POS_SYSTEM\env\Lib\site-packages\django\http\request.py", line 186, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'ebca-102-217-64-46.ngrok-free.app'. You may need to add 'ebca-102-217-64-46.ngrok-free.app' to ALLOWED_HOSTS.
+Bad Request: /api/payment/callback/
+Error processing M-Pesa callback: could not translate host name "ep-tight-bread-a5g3fblg-pooler.us-east-2.aws.neon.tech" to address: Name or service not known
+
+Internal Server Error: /api/mpesa/callback/
+Payment successful for delivery A90073F6
+C:\Users\Administrator\OneDrive\Documents\STUDIES\PERSONAL\WEB DEVELOPMENT\PROJECTS\mr_backend\POS_SYSTEM\Payments\serializer.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Administrator\OneDrive\Documents\STUDIES\PERSONAL\WEB DEVELOPMENT\PROJECTS\mr_backend\POS_SYSTEM\Payments\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Unauthorized: /api/payments/
+Unauthorized: /api/profile/
+Not Found: /api/refresh/
+Internal Server Error: /api/delivery/
+Unauthorized: /api/delivery/19/pay/
+Not Found: /api/refresh/
+Unauthorized: /api/deliveries/
+Not Found: /api/refresh/
+Unauthorized: /api/profile/
+Not Found: /api/refresh/
+MpesaService initialized with: URL=https://sandbox.safaricom.co.ke, Shortcode=174379
+Generated password for timestamp 20250630163101 (encoded)
+Normalized phone number from '0733333333' to '254733333333'
+Requesting M-Pesa access token from: https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials
+Making request with headers: Authorization: Basic ********************************************************************************************************************************************************
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "GET /oauth/v1/generate?grant_type=client_credentials HTTP/1.1" 200 None
+Access token response - Status: 200, Response: {
+            "access_token": "Yzj1HxD5uZex2kKvzdXhLSq7vxAt",
+            "expires_in": "3599"
+        }
+        
+M-Pesa access token obtained successfully
+Using access token: Yzj1H...7vxAt
+Initiating STK Push to URL: https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
+STK Push payload: {
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUwNjMwMTYzMTAx",
+  "Timestamp": "20250630163101",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": "2233",
+  "PartyA": "254733333333",
+  "PartyB": "174379",
+  "PhoneNumber": "254733333333",
+  "CallBackURL": "https://ebca-102-217-64-46.ngrok-free.app/api/mpesa/callback/",
+  "AccountReference": "DEL-10A087FC",
+  "TransactionDesc": "Payment for delivery 10A087FC"
+}
+STK Push headers: {
+  "Authorization": "Bearer Yzj1H...7vxAt",
+  "Content-Type": "application/json"
+}
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "POST /mpesa/stkpush/v1/processrequest HTTP/1.1" 200 None
+STK Push response - Status: 200, Response: {
+            "MerchantRequestID":"4c97-4c9a-8b2f-90232dba2d9333433",
+            "CheckoutRequestID":"ws_CO_30062025163112662733333333",
+            "ResponseCode": "0",
+            "ResponseDescription":"Success. Request accepted for processing",
+            "CustomerMessage":"Success. Request accepted for processing"
+        }
+        
+STK Push successful - CheckoutRequestID: ws_CO_30062025163112662733333333
+MpesaService initialized with: URL=https://sandbox.safaricom.co.ke, Shortcode=174379
+Generated password for timestamp 20250630163134 (encoded)
+Normalized phone number from '0717417314' to '254717417314'
+Requesting M-Pesa access token from: https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials
+Making request with headers: Authorization: Basic ********************************************************************************************************************************************************
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "GET /oauth/v1/generate?grant_type=client_credentials HTTP/1.1" 200 None
+Access token response - Status: 200, Response: {
+            "access_token": "AiS1pBWnpmg8cHznAAn8GVKfoQUK",
+            "expires_in": "3599"
+        }
+        
+M-Pesa access token obtained successfully
+Using access token: AiS1p...foQUK
+Initiating STK Push to URL: https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
+STK Push payload: {
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUwNjMwMTYzMTM0",
+  "Timestamp": "20250630163134",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": "2233",
+  "PartyA": "254717417314",
+  "PartyB": "174379",
+  "PhoneNumber": "254717417314",
+  "CallBackURL": "https://ebca-102-217-64-46.ngrok-free.app/api/mpesa/callback/",
+  "AccountReference": "DEL-10A087FC",
+  "TransactionDesc": "Payment for delivery 10A087FC"
+}
+STK Push headers: {
+  "Authorization": "Bearer AiS1p...foQUK",
+  "Content-Type": "application/json"
+}
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "POST /mpesa/stkpush/v1/processrequest HTTP/1.1" 200 None
+STK Push response - Status: 200, Response: {
+            "MerchantRequestID":"59f9-48d4-adb9-1c51fae44b3755896",
+            "CheckoutRequestID":"ws_CO_30062025163143611717417314",
+            "ResponseCode": "0",
+            "ResponseDescription":"Success. Request accepted for processing",
+            "CustomerMessage":"Success. Request accepted for processing"
+        }
+        
+STK Push successful - CheckoutRequestID: ws_CO_30062025163143611717417314
+MpesaService initialized with: URL=https://sandbox.safaricom.co.ke, Shortcode=174379
+Generated password for timestamp 20250630163208 (encoded)
+Normalized phone number from '0717417314' to '254717417314'
+Requesting M-Pesa access token from: https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials
+Making request with headers: Authorization: Basic ********************************************************************************************************************************************************
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "GET /oauth/v1/generate?grant_type=client_credentials HTTP/1.1" 200 None
+Access token response - Status: 200, Response: {
+            "access_token": "nI9a5lLllIHRRqAsyZNVak1bd2sY",
+            "expires_in": "3599"
+        }
+        
+M-Pesa access token obtained successfully
+Using access token: nI9a5...bd2sY
+Initiating STK Push to URL: https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
+STK Push payload: {
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUwNjMwMTYzMjA4",
+  "Timestamp": "20250630163208",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": "2233",
+  "PartyA": "254717417314",
+  "PartyB": "174379",
+  "PhoneNumber": "254717417314",
+  "CallBackURL": "https://ebca-102-217-64-46.ngrok-free.app/api/mpesa/callback/",
+  "AccountReference": "DEL-10A087FC",
+  "TransactionDesc": "Payment for delivery 10A087FC"
+}
+STK Push headers: {
+  "Authorization": "Bearer nI9a5...bd2sY",
+  "Content-Type": "application/json"
+}
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "POST /mpesa/stkpush/v1/processrequest HTTP/1.1" 200 None
+STK Push response - Status: 200, Response: {
+            "MerchantRequestID":"4366-4b9c-b7e7-e688c806cb1e23306",
+            "CheckoutRequestID":"ws_CO_30062025163218204717417314",
+            "ResponseCode": "0",
+            "ResponseDescription":"Success. Request accepted for processing",
+            "CustomerMessage":"Success. Request accepted for processing"
+        }
+        
+STK Push successful - CheckoutRequestID: ws_CO_30062025163218204717417314
+MpesaService initialized with: URL=https://sandbox.safaricom.co.ke, Shortcode=174379
+Generated password for timestamp 20250630163228 (encoded)
+Normalized phone number from '0717417314' to '254717417314'
+Requesting M-Pesa access token from: https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials
+Making request with headers: Authorization: Basic ********************************************************************************************************************************************************
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "GET /oauth/v1/generate?grant_type=client_credentials HTTP/1.1" 200 None
+Access token response - Status: 200, Response: {
+            "access_token": "x79wQMDTcpGFwlw2jghZP0y60VW0",
+            "expires_in": "3599"
+        }
+        
+M-Pesa access token obtained successfully
+Using access token: x79wQ...60VW0
+Initiating STK Push to URL: https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
+STK Push payload: {
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUwNjMwMTYzMjI4",
+  "Timestamp": "20250630163228",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": "2233",
+  "PartyA": "254717417314",
+  "PartyB": "174379",
+  "PhoneNumber": "254717417314",
+  "CallBackURL": "https://ebca-102-217-64-46.ngrok-free.app/api/mpesa/callback/",
+  "AccountReference": "DEL-10A087FC",
+  "TransactionDesc": "Payment for delivery 10A087FC"
+}
+STK Push headers: {
+  "Authorization": "Bearer x79wQ...60VW0",
+  "Content-Type": "application/json"
+}
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "POST /mpesa/stkpush/v1/processrequest HTTP/1.1" 200 None
+STK Push response - Status: 200, Response: {
+            "MerchantRequestID":"d051-4f0a-9f2c-b0f860ca1dfe1171107",
+            "CheckoutRequestID":"ws_CO_30062025163457809717417314",
+            "ResponseCode": "0",
+            "ResponseDescription":"Success. Request accepted for processing",
+            "CustomerMessage":"Success. Request accepted for processing"
+        }
+        
+STK Push successful - CheckoutRequestID: ws_CO_30062025163457809717417314
+MpesaService initialized with: URL=https://sandbox.safaricom.co.ke, Shortcode=174379
+Generated password for timestamp 20250630163708 (encoded)
+Normalized phone number from '0717417314' to '254717417314'
+Requesting M-Pesa access token from: https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials
+Making request with headers: Authorization: Basic ********************************************************************************************************************************************************
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "GET /oauth/v1/generate?grant_type=client_credentials HTTP/1.1" 200 None
+Access token response - Status: 200, Response: {
+            "access_token": "ZpJrV7PTGL420Xcji9oYK2B0gSVR",
+            "expires_in": "3599"
+        }
+        
+M-Pesa access token obtained successfully
+Using access token: ZpJrV...0gSVR
+Initiating STK Push to URL: https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
+STK Push payload: {
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUwNjMwMTYzNzA4",
+  "Timestamp": "20250630163708",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": "2233",
+  "PartyA": "254717417314",
+  "PartyB": "174379",
+  "PhoneNumber": "254717417314",
+  "CallBackURL": "https://ebca-102-217-64-46.ngrok-free.app/api/mpesa/callback/",
+  "AccountReference": "DEL-10A087FC",
+  "TransactionDesc": "Payment for delivery 10A087FC"
+}
+STK Push headers: {
+  "Authorization": "Bearer ZpJrV...0gSVR",
+  "Content-Type": "application/json"
+}
+Starting new HTTPS connection (1): sandbox.safaricom.co.ke:443
+https://sandbox.safaricom.co.ke:443 "POST /mpesa/stkpush/v1/processrequest HTTP/1.1" 200 None
+STK Push response - Status: 200, Response: {
+            "MerchantRequestID":"59f9-48d4-adb9-1c51fae44b3755956",
+            "CheckoutRequestID":"ws_CO_30062025163938846717417314",
+            "ResponseCode": "0",
+            "ResponseDescription":"Success. Request accepted for processing",
+            "CustomerMessage":"Success. Request accepted for processing"
+        }
+        
+STK Push successful - CheckoutRequestID: ws_CO_30062025163938846717417314

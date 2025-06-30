@@ -1,12 +1,23 @@
-from .models import Delivery
 from rest_framework import serializers
+from .models import Delivery, MpesaTransaction
 
-# from Payments.serializer import PaymentSerializer
-
+class MpesaTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MpesaTransaction
+        fields = [
+            "id",
+            "delivery",
+            "checkout_request_id",
+            "phone_number",
+            "amount",
+            "status",
+            "transaction_date",
+            "mpesa_receipt_number",
+            "result_code",
+            "result_desc",
+        ]
 
 class DeliverySerializer(serializers.ModelSerializer):
-    # payments = PaymentSerializer(many=True, read)
-
     class Meta:
         model = Delivery
         fields = [
@@ -15,12 +26,11 @@ class DeliverySerializer(serializers.ModelSerializer):
             "customer_name",
             "customer_phone",
             "delivery_address",
-            "delivery_postal_code",
-            "delivery_city",
+            "delivery_town",
+            "delivery_route",
             "delivery_status",
             "delivery_cost",
             "created_at",
             "delivered_at",
+            "is_paid",
         ]
-
-    
