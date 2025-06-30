@@ -1,9 +1,7 @@
-from Delivery.models import Delivery
 from rest_framework import serializers
-
+from Delivery.models import Delivery
 
 class PaymentSerializer(serializers.ModelSerializer):
-    # Paid status include afterwards
     class Meta:
         model = Delivery
         fields = [
@@ -12,4 +10,5 @@ class PaymentSerializer(serializers.ModelSerializer):
             "delivery_status",
             "delivery_cost",
             "delivered_at",
+            "is_paid",
         ]

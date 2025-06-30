@@ -137,4 +137,33 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AFRICASTALKING_USERNAME = config("AFRICASTALKING_USERNAME")
 AFRICASTALKING_API_KEY = config("AFRICASTALKING_API_KEY")
 
+# M-Pesa credentials
+MPESA_CONSUMER_KEY = config('MPESA_CONSUMER_KEY')
+MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET')
+MPESA_SHORTCODE = config('MPESA_SHORTCODE')
+MPESA_PASSKEY = config('MPESA_PASSKEY')
+MPESA_CALLBACK_URL = config('MPESA_CALLBACK_URL')
+MPESA_BASE_URL = config('MPESA_BASE_URL')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'mpesa.log',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
+# CORS settings
 CORS_ALLOWED_ORIGINS = config("ALLOWED_CORS_ORIGINS").split(",")
